@@ -22,6 +22,17 @@ struct Cell
  * You can define more members to keep track of whether your cell has been
  * visited, its parent, its cost, etc.
  */
+struct CellNode
+{
+    int parent_idx;
+    float g_cost;
+    float h_cost;
+    float f_cost;
+    bool visited;
+    bool in_open_set;
+
+    CellNode() : parent_idx(-1), g_cost(HIGH), h_cost(0.0f), f_cost(HIGH), visited(false), in_open_set(false) {}
+};
 
 
 struct GridGraph
@@ -52,6 +63,7 @@ struct GridGraph
      * TODO (P3): Define the structures you need to store node data in the graph.
      * Use the type defined above.
      */
+    std::vector<CellNode> nodes;
 };
 
 

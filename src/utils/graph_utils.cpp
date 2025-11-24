@@ -79,14 +79,10 @@ std::string mapAsString(GridGraph& graph)
 
 void initGraph(GridGraph& graph)
 {
-    /**
-     * TODO (P3): Initialize your graph nodes.
-     *
-     * When this funtion is called, the graph will have loaded the members
-     * which store the properties of the graph, like width, height, and cell
-     * odds values. You should use this information to initialize your added
-     * values, like the distances and the nodes.
-     */
+    int num_cells = graph.width * graph.height;
+    graph.nodes.clear();
+    graph.nodes.resize(num_cells);
+    graph.visited_cells.clear();
 }
 
 
@@ -148,14 +144,26 @@ std::vector<int> findNeighbors(int idx, const GridGraph& graph)
 {
     std::vector<int> neighbors;
 
-    /**
-     * TODO (P3): Return a list of the indices of all the neighbors of the node
-     * at index idx. You should not include any cells that are outside of the
-     * bounds of the graph.
-     *
-     * HINT: The functions idxToCell(), cellToIdx(), and isCellInBounds() might
-     * come in handy.
-     */
+    Cell cell = idxToCell(idx, graph);
+    const int di[4] = {1, -1, 0, 0};
+    const int dj[4] = {0, 0, 1, -1};
+
+    for (int k = 0; k < 4; ++k)
+    {
+        int ni = cell.i + di[k];
+        int nj = cell.j + dj[k];
+        if (!isCellInBounds(ni, nj, graph))
+        {
+            continue;
+        }
+
+        if (isCellOccupied(ni, nj, graph))
+        {
+            continue;
+        }
+
+        neighbors.push_back(cellToIdx(ni, nj, graph));
+    }
 
     return neighbors;
 }
@@ -206,19 +214,21 @@ bool checkCollision(int idx, const GridGraph& graph)
 
 int getParent(int idx, const GridGraph& graph)
 {
-    /**
-     * TODO (P3): Return the parent of the node at idx.
-     */
-    return -1;
+    if (idx < 0 || idx >= graph.nodes.size())
+    {
+        return -1;
+    }
+    return graph.nodes[idx].parent_idx;
 }
 
 
 float getScore(int idx, const GridGraph& graph)
 {
-    /**
-     * TODO (P3): Return the score of the node at idx.
-     */
-    return HIGH;
+    if (idx < 0 || idx >= graph.nodes.size())
+    {
+        return HIGH;
+    }
+    return graph.nodes[idx].f_cost;
 }
 
 
