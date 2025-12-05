@@ -1,7 +1,9 @@
-
+##Code compile
 cd build 
 cmake 
 make
+
+
 ./nav_cli ../data/current-2.map bfs 400 400 389 368
 
 
