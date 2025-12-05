@@ -1,6 +1,8 @@
-##Code compile
+##Code compile##
 cd build 
-cmake 
+
+cmake ..
+
 make
 
 
